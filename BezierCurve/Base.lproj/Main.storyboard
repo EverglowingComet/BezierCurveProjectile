@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BezierCurve" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="covid_19_bg" translatesAutoresizingMaskIntoConstraints="NO" id="7Jr-co-kTj">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lcm-jS-4Ci" customClass="BezierCurve" customModule="BezierCurve" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="229.66666666666663" width="393" height="393"/>
+                                <color key="backgroundColor" white="0.24496055135921557" alpha="0.2809906005859375" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Lcm-jS-4Ci" secondAttribute="height" id="FcQ-Fm-XWP"/>
+                                </constraints>
+                            </view>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Esk-n2-xQk">
+                                <rect key="frame" x="18" y="642.66666666666663" width="357" height="31"/>
+                                <connections>
+                                    <action selector="onSlideChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="g1n-ae-0SA"/>
+                                </connections>
+                            </slider>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QhC-hf-UHF">
+                                <rect key="frame" x="146.66666666666666" y="692.66666666666663" width="100" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="bbk-en-RR2"/>
+                                    <constraint firstAttribute="width" constant="100" id="wuE-OH-T7D"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Animate"/>
+                                <connections>
+                                    <action selector="onAnimateTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r7E-Bk-GHJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Esk-n2-xQk" firstAttribute="top" secondItem="Lcm-jS-4Ci" secondAttribute="bottom" constant="20" id="35d-a1-91q"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Esk-n2-xQk" secondAttribute="trailing" constant="20" id="6ap-h9-U5o"/>
+                            <constraint firstItem="QhC-hf-UHF" firstAttribute="top" secondItem="Esk-n2-xQk" secondAttribute="bottom" constant="20" id="Fet-F5-uTt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7Jr-co-kTj" secondAttribute="trailing" id="Kkg-br-9I9"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Lcm-jS-4Ci" secondAttribute="trailing" id="MTY-6Z-VhM"/>
+                            <constraint firstItem="Esk-n2-xQk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="SR0-xO-D6H"/>
+                            <constraint firstItem="7Jr-co-kTj" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="cvC-e6-pE0"/>
+                            <constraint firstItem="Lcm-jS-4Ci" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jDT-7L-ncN"/>
+                            <constraint firstItem="7Jr-co-kTj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lCg-z0-sUi"/>
+                            <constraint firstAttribute="bottom" secondItem="7Jr-co-kTj" secondAttribute="bottom" id="p0B-TY-47K"/>
+                            <constraint firstItem="QhC-hf-UHF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v8A-Vo-ggU"/>
+                            <constraint firstItem="Lcm-jS-4Ci" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="yuB-bZ-bL8"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bezier" destination="Lcm-jS-4Ci" id="zxp-Ot-iEJ"/>
+                        <outlet property="slider" destination="Esk-n2-xQk" id="69X-Vm-gdh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-57.251908396946561" y="-27.464788732394368"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="covid_19_bg" width="1600" height="900"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
