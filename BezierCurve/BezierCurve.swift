@@ -10,11 +10,11 @@ import Foundation
 
 class BezierData {
     var startPoint: CGPoint = CGPoint(x: 0.8, y: 0.9)
-    var endPoint: CGPoint = CGPoint(x: 0.1, y: 0.3)
+    var endPoint: CGPoint = CGPoint(x: 0.2, y: 0.3)
+    var seedPoint: CGPoint = CGPoint(x: 0.5, y: 0.6)
     
-    var coordX: [CGFloat] = [0,0,0]
-    var coordY: [CGFloat] = [0,0,0]
     var pointCount: Int = 10
+    var frame: CGRect = CGRect()
     
     func copy() -> BezierData {
         let result = BezierData()
@@ -23,6 +23,78 @@ class BezierData {
         
         return result
     }
+    
+    func setFrame(update: CGRect) {
+        frame = update
+    }
+    
+    func getStartPoint() -> CGPoint {
+        return CGPoint(x: startPoint.x * frame.width, y: startPoint.y * frame.height)
+    }
+    
+    func getEndPoint() -> CGPoint {
+        return CGPoint(x: endPoint.x * frame.width, y: endPoint.y * frame.height)
+    }
+    
+    func getSeedPoint() -> CGPoint {
+        return CGPoint(x: seedPoint.x * frame.width, y: seedPoint.y * frame.height)
+    }
+    
+    private func bq0(t: CGFloat) -> CGFloat {
+        return pow(t, 2) * pow(1 - t, 0)
+    }
+    
+    private func bq1(t: CGFloat) -> CGFloat {
+        return pow(t, 1) * pow(1 - t, 1)
+    }
+    
+    private func bq2(t: CGFloat) -> CGFloat {
+        return pow(t, 0) * pow(1 - t, 2)
+    }
+    
+    func isEmpty () -> Bool {
+        if frame.isEmpty {
+            return true
+        }
+        return getStartPoint().x == 0 && getSeedPoint().x == 0 && getEndPoint().x == 0 && getStartPoint().y == 0 && getSeedPoint().y == 0 && getEndPoint().y == 0
+    }
+    
+    func getPoint(t: CGFloat) -> CGPoint {
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        
+        if t >= 0 && t <= 1 && !isEmpty() {
+            x = getEndPoint().x * bq0(t: t) + getSeedPoint().x * bq1(t: t) + getStartPoint().x * bq2(t: t)
+            y = getEndPoint().y * bq0(t: t) + getSeedPoint().y * bq1(t: t) + getStartPoint().y * bq2(t: t)
+        }
+        
+        return CGPoint(x: x, y: y)
+    }
+    
+    func getPoints(progress: CGFloat) -> [CGPoint] {
+        var result = [CGPoint]()
+        let step = CGFloat(progress) / CGFloat(pointCount - 1)
+        for i in 0..<pointCount {
+            result.append(getPoint(t: CGFloat(i) * step))
+        }
+        return result
+    }
+    
+    func getLinePoint(progress: CGFloat) -> CGPoint {
+        return CGPoint(x: (startPoint.x - (startPoint.x - endPoint.x) * progress) * frame.width, y: (startPoint.y - (startPoint.y - endPoint.y) * progress) * frame.height)
+    }
+    
+    func getPointsArray(progress: CGFloat) -> [Float] {
+        var result = [Float]()
+        
+        for item in getPoints(progress: progress) {
+            result.append(Float(item.x))
+            result.append(Float(item.y))
+        }
+        
+        return result
+    }
+    
 }
 
 class BezierCurve: UIView {
@@ -43,20 +115,12 @@ class BezierCurve: UIView {
     }
 
     func isEmpty () -> Bool {
-        return bezierLayer.isEmpty()
-    }
-    
-    func setPoints(points: [CGPoint]) {
-        for i in 0..<3 {
-            BezierCurve.data.coordX[i] = points[i].x
-            BezierCurve.data.coordY[i] = points[i].y
-        }
-        bezierLayer.setNeedsDisplay()
+        return BezierCurve.data.isEmpty()
     }
     
     func setSeedPoint(point: CGPoint) {
-        BezierCurve.data.coordX[1] = point.x
-        BezierCurve.data.coordY[1] = point.y
+        BezierCurve.data.seedPoint.x = point.x / frame.width
+        BezierCurve.data.seedPoint.y = point.y / frame.height
         
         bezierLayer.setNeedsDisplay()
     }
@@ -70,12 +134,7 @@ class BezierCurve: UIView {
     override func layoutSubviews() {
         if frame.width > 0 && frame.height > 0 && isEmpty() {
             BezierCurve.data = BezierData()
-            let points = [
-                CGPoint(x: BezierCurve.data.startPoint.x * frame.width, y: BezierCurve.data.startPoint.y * frame.height),
-                CGPoint(x: (BezierCurve.data.startPoint.x - (BezierCurve.data.startPoint.x - BezierCurve.data.endPoint.x) * 0.5) * frame.width, y: (BezierCurve.data.startPoint.y - (BezierCurve.data.startPoint.y - BezierCurve.data.endPoint.y) * 0.5) * frame.height),
-                CGPoint(x: BezierCurve.data.endPoint.x * frame.width, y: BezierCurve.data.endPoint.y * frame.height),
-            ]
-            setPoints(points: points)
+            BezierCurve.data.setFrame(update: frame)
         }
     }
     
@@ -97,18 +156,6 @@ fileprivate class BezierLayer: CALayer {
     
     @NSManaged var progress: CGFloat
     
-    private func bq0(t: CGFloat) -> CGFloat {
-        return pow(t, 2) * pow(1 - t, 0)
-    }
-    
-    private func bq1(t: CGFloat) -> CGFloat {
-        return pow(t, 1) * pow(1 - t, 1)
-    }
-    
-    private func bq2(t: CGFloat) -> CGFloat {
-        return pow(t, 0) * pow(1 - t, 2)
-    }
-    
     override class func needsDisplay(forKey key: String) -> Bool {
         if key == #keyPath(progress) {
             return true
@@ -116,46 +163,8 @@ fileprivate class BezierLayer: CALayer {
         return super.needsDisplay(forKey: key)
     }
 
-    func isEmpty () -> Bool {
-        return BezierCurve.data.coordX[0] == 0 && BezierCurve.data.coordX[1] == 0 && BezierCurve.data.coordX[2] == 0 && BezierCurve.data.coordY[0] == 0 && BezierCurve.data.coordY[1] == 0 && BezierCurve.data.coordY[2] == 0
-    }
-    
     func setProgress(update: CGFloat) {
         progress = update
-    }
-    
-    func getPoint(t: CGFloat) -> CGPoint {
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        
-        if t >= 0 && t <= 1 && !isEmpty() {
-            x = BezierCurve.data.coordX[2] * bq0(t: t) + BezierCurve.data.coordX[1] * bq1(t: t) + BezierCurve.data.coordX[0] * bq2(t: t)
-            y = BezierCurve.data.coordY[2] * bq0(t: t) + BezierCurve.data.coordY[1] * bq1(t: t) + BezierCurve.data.coordY[0] * bq2(t: t)
-        }
-        print("4444444", t, BezierCurve.data.coordX, BezierCurve.data.coordY)
-        
-        return CGPoint(x: x, y: y)
-    }
-    
-    func getPoints() -> [CGPoint] {
-        var result = [CGPoint]()
-        let step = CGFloat(progress) / CGFloat(BezierCurve.data.pointCount - 1)
-        for i in 0..<BezierCurve.data.pointCount {
-            result.append(getPoint(t: CGFloat(i) * step))
-        }
-        return result
-    }
-    
-    func getStartPoint() -> CGPoint {
-        return CGPoint(x: BezierCurve.data.startPoint.x * frame.width, y: BezierCurve.data.startPoint.y * frame.height)
-    }
-    
-    func getEndPoint() -> CGPoint {
-        return CGPoint(x: BezierCurve.data.endPoint.x * frame.width, y: BezierCurve.data.endPoint.y * frame.height)
-    }
-    
-    func getLinePoint() -> CGPoint {
-        return CGPoint(x: (BezierCurve.data.startPoint.x - (BezierCurve.data.startPoint.x - BezierCurve.data.endPoint.x) * progress) * frame.width, y: (BezierCurve.data.startPoint.y - (BezierCurve.data.startPoint.y - BezierCurve.data.endPoint.y) * progress) * frame.height)
     }
     
     override func draw(in ctx: CGContext) {
@@ -163,12 +172,12 @@ fileprivate class BezierLayer: CALayer {
         
         UIGraphicsPushContext(ctx)
         
-        let points = getPoints()
+        let points = BezierCurve.data.getPoints(progress: progress)
         
         ctx.beginPath()
         ctx.setLineWidth(8)
-        ctx.move(to: getStartPoint())
-        ctx.addLine(to: getLinePoint())
+        ctx.move(to: BezierCurve.data.getStartPoint())
+        ctx.addLine(to: BezierCurve.data.getLinePoint(progress: progress))
         ctx.setStrokeColor(CGColor(red: 0, green: 0, blue: 0, alpha: 0.6))
         ctx.strokePath()
         
@@ -182,12 +191,12 @@ fileprivate class BezierLayer: CALayer {
         ctx.strokePath()
         
         ctx.beginPath()
-        ctx.addArc(center: getStartPoint(), radius: 10, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
+        ctx.addArc(center: BezierCurve.data.getStartPoint(), radius: 10, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
         ctx.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
         ctx.fillPath()
         
         ctx.beginPath()
-        ctx.addArc(center: getEndPoint(), radius: 10, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
+        ctx.addArc(center: BezierCurve.data.getEndPoint(), radius: 10, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
         ctx.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
         ctx.fillPath()
         

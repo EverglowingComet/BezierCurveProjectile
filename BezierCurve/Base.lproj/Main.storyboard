@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -46,13 +47,29 @@
                                     <action selector="onAnimateTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r7E-Bk-GHJ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLb-5g-01N">
+                                <rect key="frame" x="146.66666666666666" y="184.66666666666666" width="100" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="06j-2Q-5jA"/>
+                                    <constraint firstAttribute="height" constant="35" id="toc-PZ-62Y"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemPinkColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Create"/>
+                                <connections>
+                                    <action selector="createVideoTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JOT-kX-AUN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Esk-n2-xQk" firstAttribute="top" secondItem="Lcm-jS-4Ci" secondAttribute="bottom" constant="20" id="35d-a1-91q"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Esk-n2-xQk" secondAttribute="trailing" constant="20" id="6ap-h9-U5o"/>
+                            <constraint firstItem="cLb-5g-01N" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CfP-fb-j9J"/>
                             <constraint firstItem="QhC-hf-UHF" firstAttribute="top" secondItem="Esk-n2-xQk" secondAttribute="bottom" constant="20" id="Fet-F5-uTt"/>
+                            <constraint firstItem="Lcm-jS-4Ci" firstAttribute="top" secondItem="cLb-5g-01N" secondAttribute="bottom" constant="10" id="IZe-s6-XSV"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7Jr-co-kTj" secondAttribute="trailing" id="Kkg-br-9I9"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Lcm-jS-4Ci" secondAttribute="trailing" id="MTY-6Z-VhM"/>
                             <constraint firstItem="Esk-n2-xQk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="SR0-xO-D6H"/>
@@ -78,6 +95,9 @@
         <image name="covid_19_bg" width="1600" height="900"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C0D2E0002B6BB5F70010F5C2 /* BezierRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2DFFF2B6BB5F70010F5C2 /* BezierRenderer.swift */; };
+		C0D2E0022B6BBB690010F5C2 /* CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2E0012B6BBB690010F5C2 /* CGImage.swift */; };
+		C0D2E0042B6BEBAA0010F5C2 /* BezierShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = C0D2E0032B6BEBAA0010F5C2 /* BezierShader.metal */; };
+		C0D2E0062B6C53FB0010F5C2 /* BezierWritter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2E0052B6C53FB0010F5C2 /* BezierWritter.swift */; };
 		C0D706E52B69BB0B00B66848 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D706E42B69BB0B00B66848 /* AppDelegate.swift */; };
 		C0D706E72B69BB0B00B66848 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D706E62B69BB0B00B66848 /* SceneDelegate.swift */; };
 		C0D706E92B69BB0B00B66848 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D706E82B69BB0B00B66848 /* ViewController.swift */; };
@@ -17,6 +21,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C0D2DFFF2B6BB5F70010F5C2 /* BezierRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierRenderer.swift; sourceTree = "<group>"; };
+		C0D2E0012B6BBB690010F5C2 /* CGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
+		C0D2E0032B6BEBAA0010F5C2 /* BezierShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BezierShader.metal; sourceTree = "<group>"; };
+		C0D2E0052B6C53FB0010F5C2 /* BezierWritter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierWritter.swift; sourceTree = "<group>"; };
 		C0D706E12B69BB0B00B66848 /* BezierCurve.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BezierCurve.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0D706E42B69BB0B00B66848 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0D706E62B69BB0B00B66848 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +47,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C0D2DFFE2B6BB5E00010F5C2 /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				C0D2DFFF2B6BB5F70010F5C2 /* BezierRenderer.swift */,
+				C0D2E0012B6BBB690010F5C2 /* CGImage.swift */,
+				C0D2E0032B6BEBAA0010F5C2 /* BezierShader.metal */,
+				C0D2E0052B6C53FB0010F5C2 /* BezierWritter.swift */,
+			);
+			path = Renderer;
+			sourceTree = "<group>";
+		};
 		C0D706D82B69BB0B00B66848 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +77,7 @@
 		C0D706E32B69BB0B00B66848 /* BezierCurve */ = {
 			isa = PBXGroup;
 			children = (
+				C0D2DFFE2B6BB5E00010F5C2 /* Renderer */,
 				C0D706E42B69BB0B00B66848 /* AppDelegate.swift */,
 				C0D706E62B69BB0B00B66848 /* SceneDelegate.swift */,
 				C0D706E82B69BB0B00B66848 /* ViewController.swift */,
@@ -141,8 +161,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0D2E0062B6C53FB0010F5C2 /* BezierWritter.swift in Sources */,
+				C0D2E0002B6BB5F70010F5C2 /* BezierRenderer.swift in Sources */,
+				C0D2E0042B6BEBAA0010F5C2 /* BezierShader.metal in Sources */,
 				C0D706E92B69BB0B00B66848 /* ViewController.swift in Sources */,
 				C0D706F92B69BB3200B66848 /* BezierCurve.swift in Sources */,
+				C0D2E0022B6BBB690010F5C2 /* CGImage.swift in Sources */,
 				C0D706E52B69BB0B00B66848 /* AppDelegate.swift in Sources */,
 				C0D706E72B69BB0B00B66848 /* SceneDelegate.swift in Sources */,
 			);
@@ -304,6 +328,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -332,6 +357,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVKit
 
 class ViewController: UIViewController {
 
@@ -37,5 +38,29 @@ class ViewController: UIViewController {
         bezier.setProgress(update: CGFloat(slider.value))
     }
     
+    @IBAction func createVideoTapped(_ sender: Any) {
+        let renderer = BezierRenderer(image: UIImage(named: "covid_19_bg")!, data: BezierCurve.data, duration: CMTime(seconds: 10, preferredTimescale: 30))
+        let output = urlOfFile(name: "visualization.mp4")
+        let writter = BezierWritter(outputFileURL: output, render: renderer, videoSize: BezierCurve.data.frame.size)
+        writter.startRender(url: output) { url in
+            DispatchQueue.main.async {
+                let player = AVPlayer(url: url)
+                let vc = AVPlayerViewController()
+                vc.player = player
+                self.present(vc, animated: true)
+            }
+        }
+    }
+    
+    private func urlOfFile(name: String) -> URL {
+        let output = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(name)
+        if FileManager.default.fileExists(atPath: output.path) {
+            try? FileManager.default.removeItem(at: output)
+        }
+        
+        print("url of file: \(output)")
+        
+        return output
+    }
 }
 
