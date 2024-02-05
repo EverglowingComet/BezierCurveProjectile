@@ -9,8 +9,8 @@ import UIKit
 import Foundation
 
 class BezierData {
-    var startPoint: CGPoint = CGPoint(x: 0.8, y: 0.9)
-    var endPoint: CGPoint = CGPoint(x: 0.2, y: 0.3)
+    var startPoint: CGPoint = CGPoint(x: 0.8, y: 0.5)
+    var endPoint: CGPoint = CGPoint(x: 0.2, y: 0.4)
     var seedPoint: CGPoint = CGPoint(x: 0.5, y: 0.6)
     
     var pointCount: Int = 10

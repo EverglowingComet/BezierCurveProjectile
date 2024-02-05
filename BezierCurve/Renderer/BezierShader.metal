@@ -15,12 +15,43 @@ bool checkCircle(float2 coord, float2 point, float radius) {
     return radius * radius > dx * dx + dy * dy;
 }
 
-bool checkLine(float2 coord, float2 point0, float2 point1, float width) {
+bool checkLineOld(float2 coord, float2 point0, float2 point1, float width) {
     float y = point0.y + (point1.y - point0.y) * (coord.x - point0.x) / (point1.x - point0.x);
     if ((point0.x > point1.x && coord.x >= point1.x && coord.x <= point0.x) || (point0.x < point1.x && coord.x >= point0.x && coord.x <= point1.x)) {
         return checkCircle(float2(coord.x, y), coord, width);
     }
     return false;
+}
+
+float2 vectorAA(float2 p1, float2 p2) {
+    return float2(p2.x - p1.x, p2.y - p1.y);
+}
+
+float dotAA(float2 u, float2 v) {
+    return u.x * v.x + u.y * v.y;
+}
+
+bool checkLine(float2 coord, float2 point0, float2 point1, float width) {
+    float dx = point0.x - point1.x;
+    float dy = point0.y - point1.y;
+    if (width * width / 4 > dx * dx + dy * dy) return checkLineOld(coord, point0, point1, width);
+    
+    float alpha = atan((point1.y - point0.y) / (point1.x - point0.x));
+    float d = width / 2;
+    float2 A = float2(point0.x - d * sin(alpha), point0.y + d * cos(alpha));
+    float2 B = float2(point0.x + d * sin(alpha), point0.y - d * cos(alpha));
+    float2 C = float2(point1.x - d * sin(alpha), point1.y + d * cos(alpha));
+    //float2 D = float2(point1.x + d * sin(alpha), point1.y - d * cos(alpha));
+    
+    float2 AB = vectorAA(A, B);
+    float2 AM = vectorAA(A, coord);
+    float2 BC = vectorAA(B, C);
+    float2 BM = vectorAA(B, coord);
+    float dotABAM = dotAA(AB, AM);
+    float dotABAB = dotAA(AB, AB);
+    float dotBCBM = dotAA(BC, BM);
+    float dotBCBC = dotAA(BC, BC);
+    return 0 <= dotABAM && dotABAM <= dotABAB && 0 <= dotBCBM && dotBCBM <= dotBCBC;
 }
 
 bool checkPoints(float2 coord, device const float* points, float width, int pointCount) {
