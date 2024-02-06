@@ -155,6 +155,8 @@ public class BezierRenderer {
         var line: [Float] = [Float(linePoint.x), Float(linePoint.y)]
         var points = data.getPointsArray(progress: progress)
         var pointCount = data.pointCount
+        let targetPoint = data.getEndPoint()
+        var target: [Float] = [Float(targetPoint.x), Float(targetPoint.y)]
         
         computeCommandEncoder!.setBytes(&radius, length: MemoryLayout<Float>.size, index: 0)
         computeCommandEncoder!.setBytes(&lineWidth, length: MemoryLayout<Float>.size, index: 1)
@@ -163,6 +165,7 @@ public class BezierRenderer {
         computeCommandEncoder!.setBytes(&line, length: 2 * MemoryLayout<Float>.size, index: 4)
         computeCommandEncoder!.setBytes(&points, length: points.count * MemoryLayout<Float>.size, index: 5)
         computeCommandEncoder!.setBytes(&pointCount, length: MemoryLayout<Int>.size, index: 6)
+        computeCommandEncoder!.setBytes(&target, length: 2 * MemoryLayout<Float>.size, index: 7)
         
         // Encode a threadgroup's execution of a compute function
         computeCommandEncoder!.dispatchThreadgroups(threadGroups, threadsPerThreadgroup: threadGroupCount)

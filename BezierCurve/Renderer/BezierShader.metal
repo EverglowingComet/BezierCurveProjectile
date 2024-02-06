@@ -23,7 +23,7 @@ bool checkLineOld(float2 coord, float2 point0, float2 point1, float width) {
     return false;
 }
 
-float2 vectorAA(float2 p1, float2 p2) {
+float2 vector2d(float2 p1, float2 p2) {
     return float2(p2.x - p1.x, p2.y - p1.y);
 }
 
@@ -32,10 +32,6 @@ float dotAA(float2 u, float2 v) {
 }
 
 bool checkLine(float2 coord, float2 point0, float2 point1, float width) {
-    float dx = point0.x - point1.x;
-    float dy = point0.y - point1.y;
-    if (width * width / 4 > dx * dx + dy * dy) return checkLineOld(coord, point0, point1, width);
-    
     float alpha = atan((point1.y - point0.y) / (point1.x - point0.x));
     float d = width / 2;
     float2 A = float2(point0.x - d * sin(alpha), point0.y + d * cos(alpha));
@@ -43,14 +39,19 @@ bool checkLine(float2 coord, float2 point0, float2 point1, float width) {
     float2 C = float2(point1.x - d * sin(alpha), point1.y + d * cos(alpha));
     //float2 D = float2(point1.x + d * sin(alpha), point1.y - d * cos(alpha));
     
-    float2 AB = vectorAA(A, B);
-    float2 AM = vectorAA(A, coord);
-    float2 BC = vectorAA(B, C);
-    float2 BM = vectorAA(B, coord);
+    float2 AB = vector2d(A, B);
+    float2 AM = vector2d(A, coord);
+    float2 BC = vector2d(B, C);
+    float2 BM = vector2d(B, coord);
     float dotABAM = dotAA(AB, AM);
     float dotABAB = dotAA(AB, AB);
     float dotBCBM = dotAA(BC, BM);
     float dotBCBC = dotAA(BC, BC);
+    float minX = min(point0.x - width / 2, point1.x - width /2);
+    float minY = min(point0.y - width / 2, point1.y - width /2);
+    float maxX = max(point0.x + width / 2, point1.x + width /2);
+    float maxY = max(point0.y + width / 2, point1.y + width /2);
+    if (coord.x < minX || coord.y < minY || coord.x > maxX || coord.y > maxY) return false;
     return 0 <= dotABAM && dotABAM <= dotABAB && 0 <= dotBCBM && dotBCBM <= dotBCBC;
 }
 
@@ -72,6 +73,7 @@ kernel void bezierCompute(texture2d<float, access::read> inTexture [[ texture(0)
                         device const float *line [[ buffer(4) ]],
                         device const float *points [[ buffer(5) ]],
                         device const int *pointCount [[ buffer(6) ]],
+                        device const float *target [[ buffer(7) ]],
                         uint2 gid [[ thread_position_in_grid ]])
 {
     float2 fragCoord = float2(gid);
@@ -80,11 +82,16 @@ kernel void bezierCompute(texture2d<float, access::read> inTexture [[ texture(0)
     float4 pointColor = float4(0.0, 1.0, 1.0, 1.0);
     float4 lineColor = float4(0.0, 0.0, 0.0, 1.0);
     float4 redColor = float4(1.0, 0.0, 0.0, 1.0);
+    float2 startPoint = float2(*start, *(start + 1));
+    float2 endPoint = float2(*end, *(end + 1));
+    float2 targetPoint = float2(*target, *(target+ 1));
     
-    if (checkCircle(fragCoord, float2(*start, *(start + 1)), *radius)) {
+    if (checkCircle(fragCoord, startPoint, *radius)) {
         outTexture.write(white, gid);
-    } else if (checkCircle(fragCoord, float2(*end, *(end + 1)), *radius)) {
+    } else if (checkCircle(fragCoord, endPoint, *radius)) {
         outTexture.write(pointColor, gid);
+    } else if (checkCircle(fragCoord, targetPoint, *radius)) {
+        outTexture.write(white, gid);
     } else if (checkPoints(fragCoord, points, *width, *pointCount)) {
         outTexture.write(redColor, gid);
     } else if (checkLine(fragCoord, float2(*start, *(start + 1)), float2(*line, *(line + 1)), *width)) {

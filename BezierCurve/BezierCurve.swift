@@ -9,11 +9,11 @@ import UIKit
 import Foundation
 
 class BezierData {
-    var startPoint: CGPoint = CGPoint(x: 0.8, y: 0.5)
-    var endPoint: CGPoint = CGPoint(x: 0.2, y: 0.4)
+    var startPoint: CGPoint = CGPoint(x: 0.4, y: 0.2)
+    var endPoint: CGPoint = CGPoint(x: 0.6, y: 0.8)
     var seedPoint: CGPoint = CGPoint(x: 0.5, y: 0.6)
     
-    var pointCount: Int = 10
+    var pointCount: Int = 30
     var frame: CGRect = CGRect()
     
     func copy() -> BezierData {
