@@ -79,9 +79,13 @@ kernel void bezierCompute(texture2d<float, access::read> inTexture [[ texture(0)
     float2 fragCoord = float2(gid);
     float4 orig = inTexture.read(gid);
     float4 white = float4(1.0, 1.0, 1.0, 1.0);
-    float4 pointColor = float4(0.0, 1.0, 1.0, 1.0);
-    float4 lineColor = float4(0.0, 0.0, 0.0, 1.0);
-    float4 redColor = float4(1.0, 0.0, 0.0, 1.0);
+    float4 pointColor = float4(1.0, 0.3, 1.0, 1.0);
+    float4 lineAlpha = float4(0.5, 0.0, 0.0, 0.0);
+    float4 lineColor = float4(1.0,
+                              orig[1] * (1.0 - lineAlpha[0]) + lineAlpha[1] * lineAlpha[0],
+                              orig[2] * (1.0 - lineAlpha[0]) + lineAlpha[2] * lineAlpha[0],
+                              orig[3] * (1.0 - lineAlpha[0]) + lineAlpha[3] * lineAlpha[0]);
+    float4 redColor = float4(1.0, 1.0, 0.0, 0.0);
     float2 startPoint = float2(*start, *(start + 1));
     float2 endPoint = float2(*end, *(end + 1));
     float2 targetPoint = float2(*target, *(target+ 1));

@@ -108,14 +108,14 @@ public class BezierRenderer {
         // Converts the pixel buffer in a Metal texture.
         var cvTextureOut: CVMetalTexture?
         
-        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self.textureCache!, pixelBuffer, nil, .bgra8Unorm, width, height, 0, &cvTextureOut)
+        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self.textureCache!, pixelBuffer, nil, .rgba8Unorm, width, height, 0, &cvTextureOut)
         guard let cvTexture = cvTextureOut, let inputTexture = CVMetalTextureGetTexture(cvTexture) else {
             print("Failed to create metal texture")
             return nil
         }
         
         var cvTextureOut2: CVMetalTexture?
-        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self.textureCache!, pixelBuffer, nil, .bgra8Unorm, width, height, 0, &cvTextureOut2)
+        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self.textureCache!, pixelBuffer, nil, .rgba8Unorm, width, height, 0, &cvTextureOut2)
         guard let cvTexture2 = cvTextureOut2 , let outputTexture = CVMetalTextureGetTexture(cvTexture2) else {
             print("Failed to create metal texture")
             return nil
